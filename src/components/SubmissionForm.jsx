@@ -1,8 +1,15 @@
 // src/components/SubmissionForm.jsx
 import React, { useState } from 'react';
+import { FaCheckCircle } from "react-icons/fa";
 import './SubmissionForm.css'; // Import CSS for styling
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
+import { useNavigate } from 'react-router-dom';
 
 const SubmissionForm = () => {
+
+  const navigate = useNavigate();
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
   const [formData, setFormData] = useState({
     name: '',
     mobile: '',
@@ -23,6 +30,7 @@ const SubmissionForm = () => {
 
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,11 +47,30 @@ const SubmissionForm = () => {
     });
   };
 
+    // Update the formData when country is selected
+    const handleCountryChange = (val) => {
+      setCountry(val);
+      setFormData({
+        ...formData,
+        country: val,
+      });
+    };
+  
+    // Update the formData when state is selected
+    const handleStateChange = (val) => {
+      setState(val);
+      setFormData({
+        ...formData,
+        state: val,
+      });
+    };
+
+    
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Create FormData object to hold the form data
     const formDataToSend = new FormData();
+  
+    // Append all form data
     formDataToSend.append('name', formData.name);
     formDataToSend.append('mobile', formData.mobile);
     formDataToSend.append('email', formData.mailId);
@@ -58,21 +85,29 @@ const SubmissionForm = () => {
     formDataToSend.append('password', formData.password);
     formDataToSend.append('confirm_password', formData.confirmPassword);
     formDataToSend.append('remarks', formData.remarks);
-
-    // Append file only if one is selected
+  
+    // Append the file if one is selected
     if (formData.file) {
-      formDataToSend.append('file', formData.file); // Append the file to the FormData object
+      formDataToSend.append('file', formData.file);
     }
-
+  
     try {
       const response = await fetch('https://getform.io/f/awngpkxb', {
         method: 'POST',
-        body: formDataToSend, // Use FormData directly
+        body: formDataToSend,
       });
-
+  
       if (response.ok) {
         setSubmitted(true);
         setError(false);
+        setShowPopup(true);
+  
+        // Show the popup for 2 seconds, then redirect to login form
+        setTimeout(() => {
+          setShowPopup(false);  // Hide the popup after 2 seconds
+          navigate('/login');   // Redirect to the login page
+        }, 2000); // 2 seconds (2000 milliseconds)
+        
       } else {
         setError(true);
         console.error('Form submission failed. Status:', response.statusText);
@@ -82,9 +117,11 @@ const SubmissionForm = () => {
       console.error('Form submission failed:', err);
     }
   };
-
   return (
-    <form onSubmit={handleSubmit}>
+    <>
+    <div className='Registration-Form'>
+          <h1 style={{textAlign: "center", paddingTop: "3rem"}}>Register</h1>
+    <form onSubmit={handleSubmit} style={{padding: "1rem"}}>
       <label>Name:</label>
       <input type="text" name="name" value={formData.name} onChange={handleChange} required />
 
@@ -108,12 +145,20 @@ const SubmissionForm = () => {
         <option value="other">Other</option>
       </select>
 
-      <label>Country:</label>
-      <input type="text" name="country" value={formData.country} onChange={handleChange} required />
-
-      <label>State:</label>
-      <input type="text" name="state" value={formData.state} onChange={handleChange} required />
-
+    <label>Country:</label>
+      <CountryDropdown
+        value={country}
+       onChange={handleCountryChange} 
+        className="form-control"
+        required
+      />
+    <label>State:</label>
+      <RegionDropdown
+        country={country}
+        value={state}
+        onChange={handleStateChange} 
+        className="form-control"
+      />
       <label>City:</label>
       <input type="text" name="city" value={formData.city} onChange={handleChange} required />
 
@@ -123,7 +168,7 @@ const SubmissionForm = () => {
       <label>Pincode:</label>
       <input type="number" name="pincode" value={formData.pincode} onChange={handleChange} required />
 
-      <label>Upload File:</label>
+      <label>Photo Identify proof (with address)</label>
       <input type="file" name="file" accept="image/png" onChange={handleFileChange} required/>
 
       <label>Password:</label>
@@ -140,6 +185,18 @@ const SubmissionForm = () => {
       {submitted && <p>Form submitted successfully!</p>}
       {error && <p>Submission failed. Please try again.</p>}
     </form>
+    {/* Popup modal */}
+  {showPopup && (
+    <div className="popup-overlay">
+      <div className="popup-content">
+        <FaCheckCircle className="tick-icon" />
+        <h2>Success!</h2>
+        <p>Product Added Successfully</p>
+      </div>
+    </div>
+  )}
+  </div>
+  </>
   );
 };
 

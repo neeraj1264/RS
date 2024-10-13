@@ -1,0 +1,49 @@
+.login-sctn{
+    width: 100%;
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background: #f2f2f2;
+}
+.login-form .form-control {
+    border: 0px;
+    border-bottom: 1px solid #ccc;
+    background: transparent;
+    border-radius: 0px;
+}
+#toc{
+    padding-left:10px;
+}
+.login-bg {
+    background: url(../images/login-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+}
+button.login-btn {
+    background:#002160;
+    border: 0px;
+    color: #fff;
+    font-size: 20px;
+    padding: 10px 20px;
+    width: 100%;
+    margin-top: 20px;
+}
+.register-page .login-bg {
+    height: 115vh;
+}
+.form-control:focus{
+    box-shadow: none;
+}
+label{
+    font-weight: 600;
+}
