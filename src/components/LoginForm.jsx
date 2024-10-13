@@ -3,8 +3,10 @@ import './LoginForm.css'; // Assuming you have a CSS file for styling
 import { Link , useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+  const [credentials, setCredentials] = useState({ username: '', password: '' });
+
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     em: '',
     password: '',
@@ -38,6 +40,7 @@ const LoginForm = () => {
       // Successful login
       console.log('Login successful!');
       setErrorMessage(''); // Clear any previous error message
+      localStorage.setItem('isLoggedIn', 'true');
       navigate("/video");
     } else {
       // Display an error message if credentials are incorrect

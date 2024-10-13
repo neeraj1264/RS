@@ -81,3 +81,24 @@ p {
   font-size: 50px;
   margin-bottom: 10px;
 }
+
+/* ToastStyles.css */
+.toast-error {
+  background-color: #f44336; /* Red background for error */
+  color: #fff; /* White text */
+  font-weight: bold; /* Bold text */
+  padding: 16px; /* Padding around the text */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.toast-success {
+  background-color: #4caf50; /* Green background for success */
+  color: #fff; /* White text */
+  font-weight: bold; /* Bold text */
+  padding: 16px; /* Padding around the text */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+/* You can add more styles as needed */

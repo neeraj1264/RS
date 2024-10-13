@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Video.css';
+import { Link  } from 'react-router-dom';
 
 const Video = () => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -19,8 +20,23 @@ const Video = () => {
     document.getElementById('iframeBlocker').style.display = 'block'; // Add the blocker back when video is paused
   };
 
+  const getUserName = () => {
+    const storedData = localStorage.getItem('userData'); // Get the stored JSON string
+    if (storedData) {
+      const parsedData = JSON.parse(storedData); // Parse it back to an object
+      return parsedData.name; // Access the 'name' field
+    }
+    return null; // Return null if there's no data
+  };
+  
+  const userName = getUserName();
+  console.log(userName);
+
   return (
+    <>
+         <Link to="/login" style={{textDecoration: "none"}}>Logout</Link> {userName}
     <div className="video-container">
+    
       <div className="video-wrapper">
         <iframe
           id="youtube-iframe"
@@ -49,6 +65,7 @@ const Video = () => {
         </button>
       </div>
     </div>
+    </>
   );
 };
 
