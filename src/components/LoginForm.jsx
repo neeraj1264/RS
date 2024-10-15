@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './LoginForm.css'; // Assuming you have a CSS file for styling
-import { Link , useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
-
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -16,9 +14,23 @@ const LoginForm = () => {
 
   // Array of users with their emails and passwords
   const users = [
-    { email: 'manchandaneeraj396@gmail.com', password: '12345' },
-    { email: 'neerajm1264@gmail.com', password: '12345' },
+    { email: 'manchandaneeraj396@gmail.com', mobile: '7015823645', password: '12345' },
+    { email: 'neerajm1264@gmail.com', mobile: '7015516336', password: '12345' },
   ];
+
+  // Load stored credentials from localStorage on component mount
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('email');
+    const storedPassword = localStorage.getItem('password');
+    if (storedEmail && storedPassword) {
+      setFormData((prevData) => ({
+        ...prevData,
+        em: storedEmail,
+        password: storedPassword,
+        remember: true,
+      }));
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -30,17 +42,32 @@ const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+ // Check if the entered value is a mobile number (10 digits) or an email
+ const isMobile = /^\d{10}$/.test(formData.em);
 
-    // Check if the entered email and password match any user in the users array
-    const user = users.find(
-      (user) => user.email === formData.em && user.password === formData.password
-    );
+ // Find the user either by email or mobile number
+ const user = users.find(
+   (user) => 
+     (isMobile ? user.mobile === formData.em : user.email === formData.em) && 
+     user.password === formData.password
+ );
 
     if (user) {
       // Successful login
       console.log('Login successful!');
       setErrorMessage(''); // Clear any previous error message
       localStorage.setItem('isLoggedIn', 'true');
+
+      if (formData.remember) {
+        // Store email and password in localStorage if "Remember Me" is checked
+        localStorage.setItem('email', formData.em);
+        localStorage.setItem('password', formData.password);
+      } else {
+        // Remove email and password if "Remember Me" is unchecked
+        localStorage.removeItem('email');
+        localStorage.removeItem('password');
+      }
+
       navigate("/video");
     } else {
       // Display an error message if credentials are incorrect
@@ -97,7 +124,7 @@ const LoginForm = () => {
         )}
 
         <p className="mt-2 text-center">
-          Not registered yet? <Link to="/">Create an Account</Link>
+          Not registered yet? <Link to="/" onClick={() => localStorage.removeItem('userData')}>Create an Account</Link>
         </p>
       </form>
     </div>

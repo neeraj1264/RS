@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import './Video.css';
-import { Link  } from 'react-router-dom';
+import { Link , useNavigate } from 'react-router-dom';
 
 const Video = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-
+  const navigate = useNavigate();
   // Function to play the video and remove the blocker
   const handlePlay = () => {
     const iframe = document.getElementById('youtube-iframe');
@@ -32,9 +32,20 @@ const Video = () => {
   const userName = getUserName();
   console.log(userName);
 
+  const handleLogout = () => {
+    // Remove the isLoggedIn flag from local storage
+    localStorage.removeItem('isLoggedIn');
+    
+    // Optionally remove any other user-related data
+   
+    
+    // Navigate to the login page or home page after logout
+    navigate('/login');
+  };
+
   return (
     <>
-         <Link to="/login" style={{textDecoration: "none"}}>Logout</Link> {userName}
+        <h6 onClick={handleLogout}> <span style={{color: "#337ab7" , cursor: "pointer"}}> Logout:</span>{userName}</h6>
     <div className="video-container">
     
       <div className="video-wrapper">

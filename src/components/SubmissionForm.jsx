@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { FaCheckCircle } from "react-icons/fa";
 import { toast, ToastContainer } from 'react-toastify'; // Import ToastContainer and toast
 import 'react-toastify/dist/ReactToastify.css'; // Import the CSS for styling
@@ -7,6 +7,9 @@ import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { useNavigate } from 'react-router-dom';
 
 const SubmissionForm = () => {
+
+  // https://getform.io/f/aroldvyb    foodieshub11@gmail.com
+  // https://getform.io/f/awngpkxb    neerajm1264@gmail.com
   const navigate = useNavigate();
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
@@ -31,6 +34,15 @@ const SubmissionForm = () => {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+
+    // Check local storage when the component mounts
+    useEffect(() => {
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        // If user data exists, redirect to the login page
+        navigate('/login');
+      }
+    }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -116,7 +128,7 @@ const SubmissionForm = () => {
     }
 
     try {
-      const response = await fetch('https://getform.io/f/awngpkxb', {
+      const response = await fetch('https://getform.io/f/aroldvyb', {
         method: 'POST',
         body: formDataToSend,
       });
