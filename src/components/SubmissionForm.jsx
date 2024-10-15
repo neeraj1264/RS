@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer
 import "react-toastify/dist/ReactToastify.css"; // Import the CSS for styling
 import "./SubmissionForm.css"; // Import CSS for styling
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
-import { useNavigate } from "react-router-dom";
+import { Link , useNavigate } from "react-router-dom";
 
 const SubmissionForm = () => {
   // https://getform.io/f/aroldvyb    foodieshub11@gmail.com
@@ -166,6 +166,7 @@ const SubmissionForm = () => {
     <>
       <ToastContainer /> {/* Add the ToastContainer to the component */}
       <div className="Registration-Form">
+        <div className="login-bg"></div>
         <h1 style={{ textAlign: "center", paddingTop: "3rem" }}>Register</h1>
         <form onSubmit={handleSubmit} style={{ padding: "1rem"}}>
           <label>Name:</label>
@@ -304,6 +305,10 @@ const SubmissionForm = () => {
 
           {submitted && <p>Form submitted successfully!</p>}
           {error && <p>Submission failed. Please try again.</p>}
+          
+          <p className="mt-2 text-center">
+          Already have an Account? <Link to="/login" onClick={() => localStorage.removeItem('userData')}>Log in</Link>
+        </p>
         </form>
         {/* Popup modal */}
         {showPopup && (

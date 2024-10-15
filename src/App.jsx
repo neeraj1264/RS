@@ -5,6 +5,7 @@ import SubmissionForm from './components/SubmissionForm';
 import LoginForm from './components/LoginForm';
 import Video from './components/Video';
 import ProtectedRoute from './components/ProtectedRoute';
+import "./App.css"
 
 function App() {
   return (

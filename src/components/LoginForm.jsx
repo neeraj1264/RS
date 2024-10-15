@@ -76,6 +76,9 @@ const LoginForm = () => {
   };
 
   return (
+<>
+    <div className="login-bg"></div>
+
     <div className="login-form">
       <h2>Login to continue</h2>
       <form onSubmit={handleSubmit}>
@@ -128,6 +131,7 @@ const LoginForm = () => {
         </p>
       </form>
     </div>
+    </>
   );
 };
 
